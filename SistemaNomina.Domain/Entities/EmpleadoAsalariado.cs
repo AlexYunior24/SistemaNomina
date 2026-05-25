@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
-    internal class EmpleadoAsalariado : Empleado
+    public class EmpleadoAsalariado : Empleado
     {
         public decimal SalarioSemanal { get; set; }
+
+        protected EmpleadoAsalariado() { }
 
         public EmpleadoAsalariado(string primerNombre, string apellidoPaterno, string numeroSeguroSocial, decimal salarioSemanal)
             : base(primerNombre, apellidoPaterno, numeroSeguroSocial)

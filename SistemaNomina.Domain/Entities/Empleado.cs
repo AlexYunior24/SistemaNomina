@@ -9,9 +9,11 @@ namespace SistemaNomina.Domain.Entities
     public abstract class Empleado 
     {
         public int Id { get; set; }
-        public string PrimerNombre { get; set; } = string.Empty;
+        public string? PrimerNombre { get; set; } = string.Empty;
         public string ApellidoPaterno { get; set; } = string.Empty;
         public string NumeroSeguroSocial { get; set; } = string.Empty;
+
+        protected Empleado() { }
 
 
         protected Empleado(string primerNombre, string apellidoPaterno, string numeroSeguroSocial)

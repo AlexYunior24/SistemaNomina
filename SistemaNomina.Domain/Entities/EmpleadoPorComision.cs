@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
-    internal class EmpleadoPorComision : Empleado
+    public class EmpleadoPorComision : Empleado
     { 
         public decimal VentasBrutas { get; set; }
         public decimal TarifaComision { get; set; }
+
+        protected EmpleadoPorComision() { }
+
         public EmpleadoPorComision(string primerNombre, string apellidoPaterno, string numeroSeguroSocial, decimal ventasBrutas, decimal tarifaComision)
             : base(primerNombre, apellidoPaterno, numeroSeguroSocial)
         {
