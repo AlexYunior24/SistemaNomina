@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SistemaNomina.Data.Context;
+using SistemaNomina.Data.Repositories;
+using SistemaNomina.Services.Services;
+using SistemaNomina.ConsoleApp.UI;
+
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -16,5 +20,8 @@ var options = new DbContextOptionsBuilder<NominaDbContext>()
 using var context = new NominaDbContext(options);
 context.Database.EnsureCreated();
 
-Console.WriteLine("Conexión exitosa a SQL Server");
-Console.ReadKey();
+var repository = new EmpleadoRepository(context);
+var service = new EmpleadoService(repository);
+var menu = new MenuPrincipal(service);
+
+menu.MostrarMenu();
