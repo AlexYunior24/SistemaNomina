@@ -31,5 +31,11 @@ namespace SistemaNomina.Domain.Entities
                 return (SueldoPorHora * 40) + (horasExtra * SueldoPorHora * 1.5m);
             }
         }
+
+
+        public override string ToString()
+        {
+            return $"[ID: {Id}] {ApellidoPaterno} | NSS: {NumeroSeguroSocial} | Horas: {HorasTrabajadas} | Sueldo/Hora: {SueldoPorHora:C} | Pago: {CalcularSalario():C}";
+        }
     }
 }

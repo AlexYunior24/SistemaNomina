@@ -23,5 +23,10 @@ namespace SistemaNomina.Domain.Entities
         {
             return VentasBrutas * TarifaComision;
         }
+
+        public override string ToString()
+        {
+            return $"[ID: {Id}] {PrimerNombre} {ApellidoPaterno} | NSS: {NumeroSeguroSocial} | Ventas: {VentasBrutas:C} | Comisión: {TarifaComision:P} | Pago: {CalcularSalario():C}";
+        }
     }
 }
