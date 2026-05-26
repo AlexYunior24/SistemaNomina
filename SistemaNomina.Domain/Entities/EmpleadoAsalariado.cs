@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
+    /// <summary>
+    /// Empleado con salario fijo semanal.
+    /// </summary>
     public class EmpleadoAsalariado : Empleado
     {
         public decimal SalarioSemanal { get; set; }

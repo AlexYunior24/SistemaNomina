@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
+
+    /// <summary>
+    /// Clase base abstracta que representa un empleado de la empresa.
+    /// Define los datos comunes y el contrato de cálculo de pago para todos los tipos de empleado.
+    /// </summary>
     public abstract class Empleado 
     {
         public int Id { get; set; }
@@ -29,7 +34,10 @@ namespace SistemaNomina.Domain.Entities
             NumeroSeguroSocial = numeroSeguroSocial;
         }
 
-
+        /// <summary>
+        /// Calcula el pago semanal del empleado según su tipo de contrato.
+        /// </summary>
+        /// <returns>El monto a pagar al empleado en la semana.</returns>
         public abstract decimal CalcularSalario();
 
         public override string ToString()

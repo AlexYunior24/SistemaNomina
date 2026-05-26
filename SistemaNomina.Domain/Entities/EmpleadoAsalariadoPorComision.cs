@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
+    /// <summary>
+    /// Empleado que recibe un salario base más una comisión por ventas y un bono del 10% sobre el salario base.
+    /// </summary>
     public class EmpleadoAsalariadoPorComision : Empleado
     {
         public decimal SalarioBase { get; set; }

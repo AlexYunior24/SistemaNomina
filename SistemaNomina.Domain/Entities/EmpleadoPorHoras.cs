@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
+    /// <summary>
+    /// Empleado cuyo pago se calcula según las horas trabajadas.
+    /// Las horas extra (más de 40) se pagan a 1.5 veces el sueldo por hora.
+    /// </summary>
     public class EmpleadoPorHoras : Empleado
     {
         public decimal SueldoPorHora { get; set; }

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Interfaces
 {
+    /// <summary>
+    /// Contrato que define las operaciones de acceso a datos para los empleados.
+    /// Permite cambiar la implementación de persistencia sin afectar el resto del sistema.
+    /// </summary>
     public interface IEmpleadoRepository
     {
         void AgregarEmpleado(Empleado empleado);

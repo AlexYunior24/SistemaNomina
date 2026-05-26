@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.ConsoleApp.Helpers
 {
+    /// <summary>
+    /// Clase de utilidades para la lectura segura de datos desde la consola.
+    /// Valida la entrada del usuario y solicita nuevamente si el dato es inválido.
+    /// </summary>
     public static class Consola
     {
         public static decimal LeerDecimal(string mensaje)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SistemaNomina.Domain.Entities
 {
+    /// <summary>
+    /// Empleado cuyo pago se calcula como un porcentaje de sus ventas brutas.
+    /// </summary>
     public class EmpleadoPorComision : Empleado
     { 
         public decimal VentasBrutas { get; set; }

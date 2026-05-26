@@ -7,6 +7,9 @@ using SistemaNomina.Domain.Entities;
 
 namespace SistemaNomina.Domain.Interfaces
 {
+    /// <summary>
+    /// Contrato que define la lógica de negocio para la gestión de empleados.
+    /// </summary>
     public interface IEmpleadoService
     {
         void AgregarEmpleado(Empleado empleado);
