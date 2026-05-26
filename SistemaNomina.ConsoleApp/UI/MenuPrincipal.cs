@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SistemaNomina.Domain.Entities;
 using SistemaNomina.Domain.Interfaces;
+using SistemaNomina.ConsoleApp.Helpers;
 
 namespace SistemaNomina.ConsoleApp.UI
 {
@@ -114,17 +115,14 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.Clear();
             Console.WriteLine("-- Nuevo Empleado Asalariado --");
 
-            Console.Write("Primer Nombre: ");
-            var nombre = Console.ReadLine() ?? string.Empty;
+            var nombre = Consola.LeerTexto("Primer Nombre: ");
 
-            Console.Write("Apellido Paterno: ");
-            var apellido = Console.ReadLine() ?? string.Empty;
+            var apellido = Consola.LeerTexto("Apellido Paterno: ");
 
             Console.Write("Número de Seguro Social: ");
             var nss = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Salario Semanal: ");
-            var salario = decimal.Parse(Console.ReadLine() ?? "0");
+            var salario = Consola.LeerDecimal("Salario Semanal: ");
 
             _service.AgregarEmpleado(new EmpleadoAsalariado(nombre, apellido, nss, salario));
 
@@ -137,17 +135,14 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.Clear();
             Console.WriteLine("-- Nuevo Empleado por Horas --");
 
-            Console.Write("Apellido Paterno: ");
-            var apellido = Console.ReadLine() ?? string.Empty;
+            var apellido = Consola.LeerTexto("Apellido Paterno: ");
 
             Console.Write("Número de Seguro Social: ");
             var nss = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Sueldo por Hora: ");
-            var sueldoHora = decimal.Parse(Console.ReadLine() ?? "0");
+            var sueldoHora = Consola.LeerDecimal("Sueldo por Hora: ");
 
-            Console.Write("Horas Trabajadas: ");
-            var horas = decimal.Parse(Console.ReadLine() ?? "0");
+            var horas = Consola.LeerDecimal("Horas Trabajadas: ");
 
             _service.AgregarEmpleado(new EmpleadoPorHoras(apellido, nss, sueldoHora, horas));
 
@@ -160,20 +155,16 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.Clear();
             Console.WriteLine("-- Nuevo Empleado por Comisión --");
 
-            Console.Write("Primer Nombre: ");
-            var nombre = Console.ReadLine() ?? string.Empty;
+            var nombre = Consola.LeerTexto("Primer Nombre: ");
 
-            Console.Write("Apellido Paterno: ");
-            var apellido = Console.ReadLine() ?? string.Empty;
+            var apellido = Consola.LeerTexto("Apellido Paterno: ");
 
             Console.Write("Número de Seguro Social: ");
             var nss = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Ventas Brutas: ");
-            var ventas = decimal.Parse(Console.ReadLine() ?? "0");
+            var ventas = Consola.LeerDecimal("Ventas Brutas: ");
 
-            Console.Write("Tarifa de Comisión (ej: 0.10 para 10%): ");
-            var tarifa = decimal.Parse(Console.ReadLine() ?? "0");
+            var tarifa = Consola.LeerDecimal("Tarifa de Comisión (ej: 0.10 para 10%): ");
 
             _service.AgregarEmpleado(new EmpleadoPorComision(nombre, apellido, nss, ventas, tarifa));
 
@@ -186,23 +177,18 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.Clear();
             Console.WriteLine("-- Nuevo Empleado Asalariado por Comisión --");
 
-            Console.Write("Primer Nombre: ");
-            var nombre = Console.ReadLine() ?? string.Empty;
+            var nombre = Consola.LeerTexto("Primer Nombre: ");
 
-            Console.Write("Apellido Paterno: ");
-            var apellido = Console.ReadLine() ?? string.Empty;
+            var apellido = Consola.LeerTexto("Apellido Paterno: ");
 
             Console.Write("Número de Seguro Social: ");
             var nss = Console.ReadLine() ?? string.Empty;
 
-            Console.Write("Ventas Brutas: ");
-            var ventas = decimal.Parse(Console.ReadLine() ?? "0");
+            var ventas = Consola.LeerDecimal("Ventas Brutas: ");
 
-            Console.Write("Tarifa de Comisión (ej: 0.10 para 10%): ");
-            var tarifa = decimal.Parse(Console.ReadLine() ?? "0");
+            var tarifa = Consola.LeerDecimal("Tarifa de Comisión (ej: 0.10 para 10%): ");
 
-            Console.Write("Salario Base: ");
-            var salarioBase = decimal.Parse(Console.ReadLine() ?? "0");
+            var salarioBase = Consola.LeerDecimal("Salario Base: ");
 
             _service.AgregarEmpleado(new EmpleadoAsalariadoPorComision(nombre, apellido, nss, ventas, tarifa, salarioBase));
 
@@ -285,56 +271,44 @@ namespace SistemaNomina.ConsoleApp.UI
             {
                 case "1":
                     MostrarEmpleados("Asalariados", _service.ObtenerEmpleadosAsalariados());
-                    Console.Write("Ingrese el ID: ");
-                    var idAsal = int.Parse(Console.ReadLine() ?? "0");
+                    var idAsal = Consola.LeerEntero("Ingrese el ID: ");
                     var asalariado = _service.ObtenerAsalariadoPorId(idAsal);
                     if (asalariado == null) { MostrarNoEncontrado(); return; }
-                    Console.Write("Nuevo Salario Semanal: ");
-                    asalariado.SalarioSemanal = decimal.Parse(Console.ReadLine() ?? "0");
+                    asalariado.SalarioSemanal = Consola.LeerDecimal("Nuevo Salario Semanal: ");
                     _service.ActualizarEmpleado(asalariado);
                     MostrarExito("actualizado");
                     break;
 
                 case "2":
                     MostrarEmpleados("Por Horas", _service.ObtenerEmpleadosPorHoras());
-                    Console.Write("Ingrese el ID: ");
-                    var idHoras = int.Parse(Console.ReadLine() ?? "0");
+                    var idHoras = Consola.LeerEntero("Ingrese el ID: ");
                     var porHoras = _service.ObtenerPorHorasPorId(idHoras);
                     if (porHoras == null) { MostrarNoEncontrado(); return; }
-                    Console.Write("Nuevo Sueldo por Hora: ");
-                    porHoras.SueldoPorHora = decimal.Parse(Console.ReadLine() ?? "0");
-                    Console.Write("Nuevas Horas Trabajadas: ");
-                    porHoras.HorasTrabajadas = decimal.Parse(Console.ReadLine() ?? "0");
+                    porHoras.SueldoPorHora = Consola.LeerDecimal("Nuevo Salario por Hora: ");
+                    porHoras.HorasTrabajadas = Consola.LeerDecimal("Nuevas Horas Trabajadas: ");
                     _service.ActualizarEmpleado(porHoras);
                     MostrarExito("actualizado");
                     break;
 
                 case "3":
                     MostrarEmpleados("Por Comisión", _service.ObtenerEmpleadosPorComision());
-                    Console.Write("Ingrese el ID: ");
-                    var idCom = int.Parse(Console.ReadLine() ?? "0");
+                    var idCom = Consola.LeerEntero("Ingrese el ID: ");
                     var porComision = _service.ObtenerPorComisionPorId(idCom);
                     if (porComision == null) { MostrarNoEncontrado(); return; }
-                    Console.Write("Nuevas Ventas Brutas: ");
-                    porComision.VentasBrutas = decimal.Parse(Console.ReadLine() ?? "0");
-                    Console.Write("Nueva Tarifa de Comisión: ");
-                    porComision.TarifaComision = decimal.Parse(Console.ReadLine() ?? "0");
+                    porComision.VentasBrutas = Consola.LeerDecimal("Nuevas Ventas Brutas: ");
+                    porComision.TarifaComision = Consola.LeerDecimal("Nueva Tarifa de Comisión (ej: 0.10 para 10%): ");
                     _service.ActualizarEmpleado(porComision);
                     MostrarExito("actualizado");
                     break;
 
                 case "4":
                     MostrarEmpleados("Asalariados por Comisión", _service.ObtenerEmpleadosAsalariadosPorComision());
-                    Console.Write("Ingrese el ID: ");
-                    var idAC = int.Parse(Console.ReadLine() ?? "0");
+                    var idAC = Consola.LeerEntero("Ingrese el ID: ");
                     var asalComision = _service.ObtenerAsalariadoPorComisionPorId(idAC);
                     if (asalComision == null) { MostrarNoEncontrado(); return; }
-                    Console.Write("Nuevas Ventas Brutas: ");
-                    asalComision.VentasBrutas = decimal.Parse(Console.ReadLine() ?? "0");
-                    Console.Write("Nueva Tarifa de Comisión: ");
-                    asalComision.TarifaComision = decimal.Parse(Console.ReadLine() ?? "0");
-                    Console.Write("Nuevo Salario Base: ");
-                    asalComision.SalarioBase = decimal.Parse(Console.ReadLine() ?? "0");
+                    asalComision.VentasBrutas = Consola.LeerDecimal("Nuevas Ventas Brutas: ");
+                    asalComision.TarifaComision = Consola.LeerDecimal("Nueva Tarifa de Comisión (ej: 0.10 para 10%): ");
+                    asalComision.SalarioBase = Consola.LeerDecimal("Nuevo Salario Base: ");
                     _service.ActualizarEmpleado(asalComision);
                     MostrarExito("actualizado");
                     break;
@@ -387,8 +361,7 @@ namespace SistemaNomina.ConsoleApp.UI
         private Empleado? ObtenerEmpleadoParaEliminar(IEnumerable<Empleado> lista, Func<int, Empleado?> buscar)
         {
             MostrarEmpleados("", lista);
-            Console.Write("Ingrese el ID: ");
-            var id = int.Parse(Console.ReadLine() ?? "0");
+            var id = Consola.LeerEntero("Ingrese el ID: ");
             var empleado = buscar(id);
             if (empleado == null) MostrarNoEncontrado();
             return empleado;
