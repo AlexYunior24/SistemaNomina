@@ -10,10 +10,19 @@ namespace SistemaNomina.Domain.Interfaces
     public interface IEmpleadoService
     {
         void AgregarEmpleado(Empleado empleado);
-        Empleado? ObtenerPorId(int id);
+        EmpleadoAsalariado? ObtenerAsalariadoPorId(int id);
+        EmpleadoPorHoras? ObtenerPorHorasPorId(int id);
+        EmpleadoPorComision? ObtenerPorComisionPorId(int id);
+        EmpleadoAsalariadoPorComision? ObtenerAsalariadoPorComisionPorId(int id);
         IEnumerable<Empleado> ObtenerTodosLosEmpleados();
         void ActualizarEmpleado(Empleado empleado);
-        void EliminarEmpleado(int id);
+        void EliminarEmpleado(Empleado empleado);
+        
         IEnumerable<Empleado> ReporteSemanal();
+        IEnumerable<EmpleadoAsalariado> ObtenerEmpleadosAsalariados();
+        IEnumerable<EmpleadoPorHoras> ObtenerEmpleadosPorHoras();
+        IEnumerable<EmpleadoPorComision> ObtenerEmpleadosPorComision();
+        IEnumerable<EmpleadoAsalariadoPorComision> ObtenerEmpleadosAsalariadosPorComision();
+        
     }
 }

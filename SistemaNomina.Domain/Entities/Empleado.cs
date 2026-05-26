@@ -34,7 +34,7 @@ namespace SistemaNomina.Domain.Entities
 
         public override string ToString()
         {
-            return $"{PrimerNombre} {ApellidoPaterno} - NSS: {NumeroSeguroSocial} - Sueldo: {CalcularSalario():C}";
+            return $"[ID: {Id}] {PrimerNombre} {ApellidoPaterno} - NSS: {NumeroSeguroSocial} - Sueldo: {CalcularSalario():C}";
         }
     }
 

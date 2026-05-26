@@ -25,13 +25,17 @@ namespace SistemaNomina.Data.Repositories
             _context.SaveChanges();
         }
 
-        public Empleado? ObtenerPorId(int id)
-        {
-            return _context.EmpleadosAsalariados.FirstOrDefault(e => e.Id == id)
-                ?? _context.EmpleadosPorHoras.FirstOrDefault(e => e.Id == id)
-                ?? _context.EmpleadosPorComision.FirstOrDefault(e => e.Id == id)
-                ?? (Empleado?)_context.EmpleadosAsalariadosPorComision.FirstOrDefault(e => e.Id == id);
-        }
+        public EmpleadoAsalariado? ObtenerAsalariadoPorId(int id)
+    => _context.EmpleadosAsalariados.FirstOrDefault(e => e.Id == id);
+
+        public EmpleadoPorHoras? ObtenerPorHorasPorId(int id)
+            => _context.EmpleadosPorHoras.FirstOrDefault(e => e.Id == id);
+
+        public EmpleadoPorComision? ObtenerPorComisionPorId(int id) 
+            => _context.EmpleadosPorComision.FirstOrDefault(e => e.Id == id);
+
+        public EmpleadoAsalariadoPorComision? ObtenerAsalariadoPorComisionPorId(int id)
+            => _context.EmpleadosAsalariadosPorComision.FirstOrDefault(e => e.Id == id);
 
         public IEnumerable<Empleado> ObtenerTodosLosEmpleados()
         {
@@ -46,22 +50,54 @@ namespace SistemaNomina.Data.Repositories
 
         public void ActualizarEmpleado(Empleado empleado)
         {
-            _context.Update(empleado);
+            switch (empleado)
+            {
+                case EmpleadoAsalariado asalariado:
+                    _context.EmpleadosAsalariados.Update(asalariado);
+                    break;
+                case EmpleadoPorHoras porHoras:
+                    _context.EmpleadosPorHoras.Update(porHoras);
+                    break;
+                case EmpleadoAsalariadoPorComision asalComision:
+                    _context.EmpleadosAsalariadosPorComision.Update(asalComision);
+                    break;
+                case EmpleadoPorComision porComision:
+                    _context.EmpleadosPorComision.Update(porComision);
+                    break;
+            }
             _context.SaveChanges();
         }
 
-        public void EliminarEmpleado(int id)
+        public void EliminarEmpleado(Empleado empleado)
         {
-            var empleado = ObtenerPorId(id);
-            if (empleado == null)
+            switch (empleado)
             {
-                throw new KeyNotFoundException($"No se encontró el empleado con Id {id}");
+                case EmpleadoAsalariado a: _context.EmpleadosAsalariados.Remove(a); break;
+                case EmpleadoPorHoras h: _context.EmpleadosPorHoras.Remove(h); break;
+                case EmpleadoAsalariadoPorComision ac: _context.EmpleadosAsalariadosPorComision.Remove(ac); break;
+                case EmpleadoPorComision c: _context.EmpleadosPorComision.Remove(c); break;
             }
-            else 
-            { 
-                _context.Remove(empleado);
-                _context.SaveChanges();
-            }
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<EmpleadoAsalariado> ObtenerAsalariados()
+        {
+            return _context.EmpleadosAsalariados.ToList();
+        }
+
+        public IEnumerable<EmpleadoPorHoras> ObtenerPorHoras()
+        {
+            return _context.EmpleadosPorHoras.ToList();
+        }
+
+        public IEnumerable<EmpleadoPorComision> ObtenerPorComision()
+        {
+            return _context.EmpleadosPorComision.ToList();
+        }
+
+        public IEnumerable<EmpleadoAsalariadoPorComision> ObtenerAsalariadosPorComision()
+        {
+            return _context.EmpleadosAsalariadosPorComision.ToList();
         }
 
     }

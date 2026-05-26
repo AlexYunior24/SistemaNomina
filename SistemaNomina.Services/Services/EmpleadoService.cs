@@ -19,10 +19,17 @@ namespace SistemaNomina.Services.Services
         {
             _empleadoRepository.AgregarEmpleado(empleado);
         }
-        public Empleado? ObtenerPorId(int id)
-        {
-            return _empleadoRepository.ObtenerPorId(id);
-        }
+        public EmpleadoAsalariado? ObtenerAsalariadoPorId(int id)
+            => _empleadoRepository.ObtenerAsalariadoPorId(id);
+
+        public EmpleadoPorHoras? ObtenerPorHorasPorId(int id)
+            => _empleadoRepository.ObtenerPorHorasPorId(id);
+
+        public EmpleadoPorComision? ObtenerPorComisionPorId(int id)
+            => _empleadoRepository.ObtenerPorComisionPorId(id);
+
+        public EmpleadoAsalariadoPorComision? ObtenerAsalariadoPorComisionPorId(int id)
+            => _empleadoRepository.ObtenerAsalariadoPorComisionPorId(id);
         public IEnumerable<Empleado> ObtenerTodosLosEmpleados()
         {
             return _empleadoRepository.ObtenerTodosLosEmpleados();
@@ -31,13 +38,37 @@ namespace SistemaNomina.Services.Services
         {
             _empleadoRepository.ActualizarEmpleado(empleado);
         }
-        public void EliminarEmpleado(int id)
+        public void EliminarEmpleado(Empleado empleado)
         {
-            _empleadoRepository.EliminarEmpleado(id);
+            _empleadoRepository.EliminarEmpleado(empleado);
         }
         public IEnumerable<Empleado> ReporteSemanal()
         {
             return _empleadoRepository.ObtenerTodosLosEmpleados();
         }
+
+        
+        public IEnumerable<EmpleadoAsalariado> ObtenerEmpleadosAsalariados()
+        {
+            return _empleadoRepository.ObtenerAsalariados();
+        }
+
+        public  IEnumerable<EmpleadoPorHoras> ObtenerEmpleadosPorHoras()
+        {
+            return _empleadoRepository.ObtenerPorHoras();
+        }
+
+        public IEnumerable<EmpleadoPorComision> ObtenerEmpleadosPorComision()
+        {
+            return _empleadoRepository.ObtenerPorComision();
+        }
+
+        public IEnumerable<EmpleadoAsalariadoPorComision> ObtenerEmpleadosAsalariadosPorComision()
+        {
+            return _empleadoRepository.ObtenerAsalariadosPorComision();
+        }
+        
+
+
     }
 }

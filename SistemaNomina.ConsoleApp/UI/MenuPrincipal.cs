@@ -36,7 +36,7 @@ namespace SistemaNomina.ConsoleApp.UI
                         MenuGestionEmpleados();
                         break;
                     case "2":
-                        MostrarReporteSemanal();
+                        MenuReporteSemanal();
                         break;
                     case "3":
                         return;
@@ -55,7 +55,7 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.WriteLine("     GESTIÓN DE EMPLEADOS       ");
             Console.WriteLine("=================================");
             Console.WriteLine("1. Agregar Empleado");
-            Console.WriteLine("2. Ver todos los Empleados");
+            Console.WriteLine("2. Ver Empleados");
             Console.WriteLine("3. Actualizar Empleado");
             Console.WriteLine("4. Eliminar Empleado");
             Console.WriteLine("0. Volver");
@@ -68,7 +68,7 @@ namespace SistemaNomina.ConsoleApp.UI
                     AgregarEmpleado();
                     break;
                 case "2":
-                    VerTodosLosEmpleados();
+                    MenuVerEmpleados();
                     break;
                 case "3":
                     ActualizarEmpleado();
@@ -210,14 +210,43 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.ReadKey();
         }
 
-        private void VerTodosLosEmpleados()
+        private void MenuVerEmpleados()
+        {
+
+            Console.Clear();
+            Console.WriteLine("=================================");
+            Console.WriteLine("       VER EMPLEADOS            ");
+            Console.WriteLine("=================================");
+            Console.WriteLine("1. Todos los Empleados");
+            Console.WriteLine("2. Empleados Asalariados");
+            Console.WriteLine("3. Empleados por Horas");
+            Console.WriteLine("4. Empleados por Comisión");
+            Console.WriteLine("5. Empleados Asalariados por Comisión");
+            Console.WriteLine("0. Volver");
+            Console.WriteLine("=================================");
+            Console.Write("Seleccione una opción: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1": MostrarEmpleados("Todos", _service.ObtenerTodosLosEmpleados()); break;
+                case "2": MostrarEmpleados("Asalariados", _service.ObtenerEmpleadosAsalariados()); break;
+                case "3": MostrarEmpleados("Por Horas", _service.ObtenerEmpleadosPorHoras()); break;
+                case "4": MostrarEmpleados("Por Comisión", _service.ObtenerEmpleadosPorComision()); break;
+                case "5": MostrarEmpleados("Asalariados por Comisión", _service.ObtenerEmpleadosAsalariadosPorComision()); break;
+                case "0": break;
+                default:
+                    Console.WriteLine("Opción no válida. Presione cualquier tecla...");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void MostrarEmpleados(string tipo, IEnumerable<Empleado> empleados)
         {
             Console.Clear();
             Console.WriteLine("=================================");
-            Console.WriteLine("       LISTA DE EMPLEADOS       ");
+            Console.WriteLine($"   EMPLEADOS {tipo.ToUpper()}");
             Console.WriteLine("=================================");
-
-            var empleados = _service.ObtenerTodosLosEmpleados();
 
             if (!empleados.Any())
             {
@@ -228,11 +257,14 @@ namespace SistemaNomina.ConsoleApp.UI
                 foreach (var empleado in empleados)
                 {
                     Console.WriteLine(empleado.ToString());
+                    Console.WriteLine("---------------------------------");
                 }
+                Console.WriteLine($"Total: {empleados.Count()} empleado(s)");
             }
 
             Console.WriteLine("\nPresione cualquier tecla para volver...");
             Console.ReadKey();
+ 
         }
 
         private void ActualizarEmpleado()
@@ -241,58 +273,72 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.WriteLine("=================================");
             Console.WriteLine("      ACTUALIZAR EMPLEADO       ");
             Console.WriteLine("=================================");
+            Console.WriteLine("1. Empleado Asalariado");
+            Console.WriteLine("2. Empleado por Horas");
+            Console.WriteLine("3. Empleado por Comisión");
+            Console.WriteLine("4. Empleado Asalariado por Comisión");
+            Console.WriteLine("0. Volver");
+            Console.WriteLine("=================================");
+            Console.Write("Seleccione el tipo: ");
 
-            VerTodosLosEmpleados();
-
-            Console.Write("Ingrese el ID del empleado a actualizar: ");
-            var id = int.Parse(Console.ReadLine() ?? "0");
-
-            var empleado = _service.ObtenerPorId(id);
-
-            if (empleado == null)
+            switch (Console.ReadLine())
             {
-                Console.WriteLine("❌ Empleado no encontrado. Presione cualquier tecla...");
-                Console.ReadKey();
-                return;
-            }
-
-            Console.WriteLine($"\nEmpleado encontrado: {empleado}");
-            Console.WriteLine("Ingrese los nuevos datos:");
-
-            switch (empleado)
-            {
-                case EmpleadoAsalariado asalariado:
+                case "1":
+                    MostrarEmpleados("Asalariados", _service.ObtenerEmpleadosAsalariados());
+                    Console.Write("Ingrese el ID: ");
+                    var idAsal = int.Parse(Console.ReadLine() ?? "0");
+                    var asalariado = _service.ObtenerAsalariadoPorId(idAsal);
+                    if (asalariado == null) { MostrarNoEncontrado(); return; }
                     Console.Write("Nuevo Salario Semanal: ");
                     asalariado.SalarioSemanal = decimal.Parse(Console.ReadLine() ?? "0");
+                    _service.ActualizarEmpleado(asalariado);
+                    MostrarExito("actualizado");
                     break;
 
-                case EmpleadoPorHoras porHoras:
+                case "2":
+                    MostrarEmpleados("Por Horas", _service.ObtenerEmpleadosPorHoras());
+                    Console.Write("Ingrese el ID: ");
+                    var idHoras = int.Parse(Console.ReadLine() ?? "0");
+                    var porHoras = _service.ObtenerPorHorasPorId(idHoras);
+                    if (porHoras == null) { MostrarNoEncontrado(); return; }
                     Console.Write("Nuevo Sueldo por Hora: ");
                     porHoras.SueldoPorHora = decimal.Parse(Console.ReadLine() ?? "0");
                     Console.Write("Nuevas Horas Trabajadas: ");
                     porHoras.HorasTrabajadas = decimal.Parse(Console.ReadLine() ?? "0");
+                    _service.ActualizarEmpleado(porHoras);
+                    MostrarExito("actualizado");
                     break;
 
-                case EmpleadoAsalariadoPorComision asalComision:
+                case "3":
+                    MostrarEmpleados("Por Comisión", _service.ObtenerEmpleadosPorComision());
+                    Console.Write("Ingrese el ID: ");
+                    var idCom = int.Parse(Console.ReadLine() ?? "0");
+                    var porComision = _service.ObtenerPorComisionPorId(idCom);
+                    if (porComision == null) { MostrarNoEncontrado(); return; }
+                    Console.Write("Nuevas Ventas Brutas: ");
+                    porComision.VentasBrutas = decimal.Parse(Console.ReadLine() ?? "0");
+                    Console.Write("Nueva Tarifa de Comisión: ");
+                    porComision.TarifaComision = decimal.Parse(Console.ReadLine() ?? "0");
+                    _service.ActualizarEmpleado(porComision);
+                    MostrarExito("actualizado");
+                    break;
+
+                case "4":
+                    MostrarEmpleados("Asalariados por Comisión", _service.ObtenerEmpleadosAsalariadosPorComision());
+                    Console.Write("Ingrese el ID: ");
+                    var idAC = int.Parse(Console.ReadLine() ?? "0");
+                    var asalComision = _service.ObtenerAsalariadoPorComisionPorId(idAC);
+                    if (asalComision == null) { MostrarNoEncontrado(); return; }
                     Console.Write("Nuevas Ventas Brutas: ");
                     asalComision.VentasBrutas = decimal.Parse(Console.ReadLine() ?? "0");
                     Console.Write("Nueva Tarifa de Comisión: ");
                     asalComision.TarifaComision = decimal.Parse(Console.ReadLine() ?? "0");
                     Console.Write("Nuevo Salario Base: ");
                     asalComision.SalarioBase = decimal.Parse(Console.ReadLine() ?? "0");
-                    break;
-
-                case EmpleadoPorComision porComision:
-                    Console.Write("Nuevas Ventas Brutas: ");
-                    porComision.VentasBrutas = decimal.Parse(Console.ReadLine() ?? "0");
-                    Console.Write("Nueva Tarifa de Comisión: ");
-                    porComision.TarifaComision = decimal.Parse(Console.ReadLine() ?? "0");
+                    _service.ActualizarEmpleado(asalComision);
+                    MostrarExito("actualizado");
                     break;
             }
-
-            _service.ActualizarEmpleado(empleado);
-            Console.WriteLine("\n✅ Empleado actualizado. Presione cualquier tecla...");
-            Console.ReadKey();
         }
 
         private void EliminarEmpleado()
@@ -301,44 +347,101 @@ namespace SistemaNomina.ConsoleApp.UI
             Console.WriteLine("=================================");
             Console.WriteLine("       ELIMINAR EMPLEADO        ");
             Console.WriteLine("=================================");
+            Console.WriteLine("1. Empleado Asalariado");
+            Console.WriteLine("2. Empleado por Horas");
+            Console.WriteLine("3. Empleado por Comisión");
+            Console.WriteLine("4. Empleado Asalariado por Comisión");
+            Console.WriteLine("0. Volver");
+            Console.WriteLine("=================================");
+            Console.Write("Seleccione el tipo: ");
 
-            VerTodosLosEmpleados();
-
-            Console.Write("Ingrese el ID del empleado a eliminar: ");
-            var id = int.Parse(Console.ReadLine() ?? "0");
-
-            var empleado = _service.ObtenerPorId(id);
-
-            if (empleado == null)
+            Empleado? empleado = Console.ReadLine() switch
             {
-                Console.WriteLine("❌ Empleado no encontrado. Presione cualquier tecla...");
-                Console.ReadKey();
-                return;
-            }
+                "1" => ObtenerEmpleadoParaEliminar(_service.ObtenerEmpleadosAsalariados(),
+                           id => _service.ObtenerAsalariadoPorId(id)),
+                "2" => ObtenerEmpleadoParaEliminar(_service.ObtenerEmpleadosPorHoras(),
+                           id => _service.ObtenerPorHorasPorId(id)),
+                "3" => ObtenerEmpleadoParaEliminar(_service.ObtenerEmpleadosPorComision(),
+                           id => _service.ObtenerPorComisionPorId(id)),
+                "4" => ObtenerEmpleadoParaEliminar(_service.ObtenerEmpleadosAsalariadosPorComision(),
+                           id => _service.ObtenerAsalariadoPorComisionPorId(id)),
+                _ => null
+            };
+
+            if (empleado == null) return;
 
             Console.WriteLine($"\n¿Está seguro que desea eliminar a {empleado.PrimerNombre} {empleado.ApellidoPaterno}? (S/N): ");
 
             if (Console.ReadLine()?.ToUpper() == "S")
             {
-                _service.EliminarEmpleado(id);
-                Console.WriteLine("✅ Empleado eliminado. Presione cualquier tecla...");
+                _service.EliminarEmpleado(empleado);
+                MostrarExito("eliminado");
             }
             else
             {
                 Console.WriteLine("Operación cancelada. Presione cualquier tecla...");
+                Console.ReadKey();
             }
+        }
 
+        private Empleado? ObtenerEmpleadoParaEliminar(IEnumerable<Empleado> lista, Func<int, Empleado?> buscar)
+        {
+            MostrarEmpleados("", lista);
+            Console.Write("Ingrese el ID: ");
+            var id = int.Parse(Console.ReadLine() ?? "0");
+            var empleado = buscar(id);
+            if (empleado == null) MostrarNoEncontrado();
+            return empleado;
+        }
+
+        private void MostrarNoEncontrado()
+        {
+            Console.WriteLine("❌ Empleado no encontrado. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
-        private void MostrarReporteSemanal()
+        private void MostrarExito(string accion)
+        {
+            Console.WriteLine($"\n✅ Empleado {accion} exitosamente. Presione cualquier tecla...");
+            Console.ReadKey();
+        }
+
+        private void MenuReporteSemanal()
         {
             Console.Clear();
             Console.WriteLine("=================================");
             Console.WriteLine("       REPORTE SEMANAL          ");
             Console.WriteLine("=================================");
+            Console.WriteLine("1. Reporte General");
+            Console.WriteLine("2. Reporte Asalariados");
+            Console.WriteLine("3. Reporte por Horas");
+            Console.WriteLine("4. Reporte por Comisión");
+            Console.WriteLine("5. Reporte Asalariados por Comisión");
+            Console.WriteLine("0. Volver");
+            Console.WriteLine("=================================");
+            Console.Write("Seleccione una opción: ");
 
-            var empleados = _service.ReporteSemanal();
+            switch (Console.ReadLine())
+            {
+                case "1": MostrarReporte("General", _service.ReporteSemanal()); break;
+                case "2": MostrarReporte("Asalariados", _service.ObtenerEmpleadosAsalariados()); break;
+                case "3": MostrarReporte("Por Horas", _service.ObtenerEmpleadosPorHoras()); break;
+                case "4": MostrarReporte("Por Comisión", _service.ObtenerEmpleadosPorComision()); break;
+                case "5": MostrarReporte("Asalariados por Comisión", _service.ObtenerEmpleadosAsalariadosPorComision()); break;
+                case "0": break;
+                default:
+                    Console.WriteLine("Opción no válida. Presione cualquier tecla...");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+
+        private void MostrarReporte(string tipo, IEnumerable<Empleado> empleados)
+        {
+            Console.Clear();
+            Console.WriteLine("=================================");
+            Console.WriteLine($"   REPORTE SEMANAL {tipo.ToUpper()}");
+            Console.WriteLine("=================================");
 
             if (!empleados.Any())
             {
@@ -351,11 +454,12 @@ namespace SistemaNomina.ConsoleApp.UI
                 foreach (var empleado in empleados)
                 {
                     Console.WriteLine(empleado.ToString());
+                    Console.WriteLine("---------------------------------");
                     totalNomina += empleado.CalcularSalario();
                 }
 
                 Console.WriteLine("=================================");
-                Console.WriteLine($"Total Nómina Semanal: {totalNomina:C}");
+                Console.WriteLine($"Total Nómina: {totalNomina:C}");
                 Console.WriteLine("=================================");
             }
 
