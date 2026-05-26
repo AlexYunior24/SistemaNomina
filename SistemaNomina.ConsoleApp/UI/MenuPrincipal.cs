@@ -128,7 +128,7 @@ namespace SistemaNomina.ConsoleApp.UI
 
             _service.AgregarEmpleado(new EmpleadoAsalariado(nombre, apellido, nss, salario));
 
-            Console.WriteLine("\n✅ Empleado agregado exitosamente. Presione cualquier tecla...");
+            Console.WriteLine("\nEmpleado agregado exitosamente. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
@@ -151,7 +151,7 @@ namespace SistemaNomina.ConsoleApp.UI
 
             _service.AgregarEmpleado(new EmpleadoPorHoras(apellido, nss, sueldoHora, horas));
 
-            Console.WriteLine("\n✅ Empleado agregado exitosamente. Presione cualquier tecla...");
+            Console.WriteLine("\nEmpleado agregado exitosamente. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
@@ -177,7 +177,7 @@ namespace SistemaNomina.ConsoleApp.UI
 
             _service.AgregarEmpleado(new EmpleadoPorComision(nombre, apellido, nss, ventas, tarifa));
 
-            Console.WriteLine("\n✅ Empleado agregado exitosamente. Presione cualquier tecla...");
+            Console.WriteLine("\nEmpleado agregado exitosamente. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
@@ -206,7 +206,7 @@ namespace SistemaNomina.ConsoleApp.UI
 
             _service.AgregarEmpleado(new EmpleadoAsalariadoPorComision(nombre, apellido, nss, ventas, tarifa, salarioBase));
 
-            Console.WriteLine("\n✅ Empleado agregado exitosamente. Presione cualquier tecla...");
+            Console.WriteLine("\nEmpleado agregado exitosamente. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
@@ -402,7 +402,7 @@ namespace SistemaNomina.ConsoleApp.UI
 
         private void MostrarExito(string accion)
         {
-            Console.WriteLine($"\n✅ Empleado {accion} exitosamente. Presione cualquier tecla...");
+            Console.WriteLine($"\nEmpleado {accion} exitosamente. Presione cualquier tecla...");
             Console.ReadKey();
         }
 
